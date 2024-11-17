@@ -55,7 +55,7 @@ Usage: kubectl snapshot_api_objects [OPTIONS]
 Options:
     -n, --namespace      Optional: Specific namespace to export. Defaults to all namespaces
     -r, --resource-types Optional: Comma-separated list of resource types to export (e.g., "pods,deployments,services")
-                        Defaults to all resource types
+                            Defaults to all resource types
     -h, --help          Show this help message
 
 Examples:
