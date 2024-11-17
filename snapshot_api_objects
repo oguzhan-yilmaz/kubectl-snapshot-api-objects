@@ -156,13 +156,6 @@ else
     exit 1
 fi
 
-# Check for yq
-if check_command yq; then
-    log "Dependecy 'yq' is installed."
-else
-    echo "Dependecy 'yq' is NOT installed. Aborting..."
-    exit 1
-fi
 
 # Loop through each resource type
 # get_resource_types | while read -r resource_type; do

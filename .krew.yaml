@@ -15,7 +15,6 @@ spec:
   caveats: |
     Requires:
       - kubectl neat
-      - yq
 
   platforms:
   - selector:
