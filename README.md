@@ -13,6 +13,14 @@ This plugin loops through namespaces, Kubernetes API Object types and gets the `
 kubectl krew install snapshot_api_objects
 ```
 
+## Local Installation
+
+```bash
+curl -sLO https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml
+
+kubectl krew install --manifest=.krew.yaml
+```
+
 ## Usage
 
 **Snapshot all API Object types from all Namespaces**
