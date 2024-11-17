@@ -1,4 +1,19 @@
+#!/usr/bin/env bash
 
+if kubectl neat --help >/dev/null 2>&1; then
+    log "Dependency 'kubectl neat' plugin is installed."
+else
+    echo "Dependency 'kubectl neat' pluging is NOT installed. Aborting..."
+    exit 1
+fi
+
+# # Check for yq
+# if check_command yq; then
+#     log "Dependecy 'yq' is installed."
+# else
+#     echo "Dependecy 'yq' is NOT installed. Aborting..."
+#     exit 1
+# fi
 
 set -euxo pipefail
 
