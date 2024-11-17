@@ -17,21 +17,6 @@ This plugin loops through namespaces, Kubernetes API Object types and gets the `
 kubectl krew install snapshot_api_objects
 ```
 
-## Local Installation
-
-```bash
-curl -sLO https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml
-
-
-kubectl krew install --manifest=.krew.yaml
-
-# make kubectl krew plugin executable upon local installation
-chmod +x ~/.krew/store/snapshot_api_objects/v*/snapshot_api_objects
-
-kubectl snapshot_api_objects -n default
-
-```
-
 ## Usage
 
 **Snapshot all API Object types from all Namespaces**
@@ -86,3 +71,17 @@ git update-index --chmod=+x snapshot-api-objects
 
 chmod +x ~/.krew/store/snapshot_api_objects/v0.0.1/source/snapshot-api-objects-script.sh
  -->
+
+## Local Installation
+
+```bash
+curl -sLO https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml
+
+
+kubectl krew install --manifest=.krew.yaml
+
+# make kubectl krew plugin executable upon local installation
+chmod +x ~/.krew/store/snapshot_api_objects/v*/snapshot_api_objects
+
+kubectl snapshot_api_objects -n default
+```
