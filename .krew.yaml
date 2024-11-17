@@ -30,7 +30,7 @@ spec:
     # 'uri' specifies .zip or .tar.gz archive URL of a plugin
     uri: "https://github.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/archive/v0.0.4.tar.gz"  # https://github.com/achanda/kubectl-restart/archive/v0.0.3.zip
     # # 'sha256' is the sha256sum of the url (archive file) above
-    sha256: d3f122c36c5f3094de49539d21ff98e691c14d86ab6cc59d7b8feca195d337dd
+    sha256: a6194b986756e26abeb53a18e9add1e4dde8326bfb6a9dd41cf1b6cdff26ed94
     # # 'files' lists which files should be extracted out from downloaded archive
     files:
     - from: "kubectl-snapshot-api-objects-*/snapshot_api_objects"
