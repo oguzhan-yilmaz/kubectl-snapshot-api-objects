@@ -60,9 +60,9 @@ Options:
 
 Examples:
     kubectl snapshot_api_objects                                                # Export all resources from all namespaces
-    kubectl snapshot_api_objects -n default,kube-system                         # Export all resources from default namespace
+    kubectl snapshot_api_objects -n default,kube-system                         # Export all resources from default and kube-system namespaces
     kubectl snapshot_api_objects -r pods,deployments                            # Export only pods and deployments from all namespaces
-    kubectl snapshot_api_objects -n default,kube-system -r pods,deployments     # Export pods and deployments from default namespace
+    kubectl snapshot_api_objects -n default,kube-system -r pods,deployments     # Export pods and deployments from default and kube-system namespaces
 EOF
 ```
 
