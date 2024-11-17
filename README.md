@@ -75,10 +75,11 @@ chmod +x ~/.krew/store/snapshot_api_objects/v0.0.1/source/snapshot-api-objects-s
 ## Local Installation
 
 ```bash
-curl -sLO https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml
+curl -sL https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml -o snapshot_api_objects.krew.yaml
 
+kubectl krew uninstall snapshot_api_objects || true
 
-kubectl krew install --manifest=.krew.yaml
+kubectl krew install --manifest=snapshot_api_objects.krew.yaml
 
 # make kubectl krew plugin executable upon local installation
 chmod +x ~/.krew/store/snapshot_api_objects/v*/snapshot_api_objects
