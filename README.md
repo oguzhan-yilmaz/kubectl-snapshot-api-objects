@@ -18,7 +18,14 @@ kubectl krew install snapshot_api_objects
 ```bash
 curl -sLO https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml
 
+
 kubectl krew install --manifest=.krew.yaml
+
+# make kubectl krew plugin executable upon local installation
+chmod +x ~/.krew/store/snapshot_api_objects/v*/snapshot_api_objects
+
+kubectl snapshot_api_objects -n default
+
 ```
 
 ## Usage
