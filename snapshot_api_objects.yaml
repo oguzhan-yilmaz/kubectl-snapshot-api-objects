@@ -16,7 +16,6 @@ spec:
     Requires:
       - kubectl neat
       - yq
-      - GNU parallel
 
   # See all supported platforms below.
   
@@ -31,14 +30,16 @@ spec:
     # 'uri' specifies .zip or .tar.gz archive URL of a plugin
     uri: "https://github.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/archive/v0.0.1.tar.gz"  # https://github.com/achanda/kubectl-restart/archive/v0.0.3.zip
     # # 'sha256' is the sha256sum of the url (archive file) above
-    sha256: d7079b79bf4e10e55ded435a2e862efe310e019b6c306a8ff04191238ef4b2b4
+    sha256: f700d42d644a7f591eb25eba13ba17d9b5c2c69e549ef747f6a83ad6573f235c
     # # 'files' lists which files should be extracted out from downloaded archive
     files:
-    - from: "src/snapshot-api-objects-script.sh"
-      to: "snapshot_api_objects.sh"
-    - from: "LICENSE"
+    - from: "kubectl-snapshot-api-objects-*/src/snapshot-api-objects"
       to: "."
+    - from: "kubectl-snapshot-api-objects-*/LICENSE"
+      to: "."
+    # - from: "kubectl-snapshot-api-objects*/LICENSE"
+    #   to: "."
     # 'bin' specifies the path to the the plugin executable among extracted files
-    bin:  snapshot_api_objects.sh
+    bin: snapshot_api_objects
 
-    # ❯ chmod +x /Users/og/.krew/store/snapshotapiobjects/v0.0.1/snapshot_api_objects.sh
+    # chmod +x ~/.krew/store/snapshot_api_objects/v0.0.1/source/snapshot-api-objects-script.sh
