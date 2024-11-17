@@ -7,13 +7,13 @@ else
     exit 1
 fi
 
-# # Check for yq
-# if check_command yq; then
-#     log "Dependecy 'yq' is installed."
-# else
-#     echo "Dependecy 'yq' is NOT installed. Aborting..."
-#     exit 1
-# fi
+# Check for yq
+if check_command yq; then
+    log "Dependecy 'yq' is installed."
+else
+    echo "Dependecy 'yq' is NOT installed. Aborting..."
+    exit 1
+fi
 
 set -euxo pipefail
 
@@ -34,6 +34,5 @@ yq eval '.spec.version = "v0.0.1"' -i snapshot_api_objects.local.yaml
 kubectl krew install --manifest=snapshot_api_objects.local.yaml --archive=./dist/local-package.tar.gz
 
 chmod +x ~/.krew/store/snapshot_api_objects/v0.0.1/snapshot_api_objects.sh
-
 
 kubectl krew list
