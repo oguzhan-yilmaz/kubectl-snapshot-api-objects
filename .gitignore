@@ -1,0 +1,7 @@
+temp/
+.vscode/
+dist/
+k8s_resources_*/
+snapshot_api_objects.local.yaml
+snapshot_api_objects_*/
+snapshot_api_objects_*.tar.gz

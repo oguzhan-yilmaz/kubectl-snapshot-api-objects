@@ -1,0 +1,197 @@
+#!/usr/bin/env bash
+
+# Set strict error handling
+set -euo pipefail
+IFS=$'\n\t'
+
+# Function to show usage
+show_usage() {
+    cat << EOF
+Usage: kubectl snapshot_api_objects [OPTIONS]
+
+Options:
+    -n, --namespace      Optional: Specific namespace to export. Defaults to all namespaces
+    -r, --resource-types Optional: Comma-separated list of resource types to export (e.g., "pods,deployments,services")
+                        Defaults to all resource types
+    -h, --help          Show this help message
+
+Examples:
+    kubectl snapshot_api_objects                                    # Export all resources from all namespaces
+    kubectl snapshot_api_objects -n default                         # Export all resources from default namespace
+    kubectl snapshot_api_objects -r pods,deployments                # Export only pods and deployments from all namespaces
+    kubectl snapshot_api_objects -n default -r pods,deployments     # Export pods and deployments from default namespace
+EOF
+}
+
+# Parse command line arguments
+NAMESPACE=""
+RESOURCE_TYPES=""
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -n|--namespace)
+            NAMESPACE="$2"
+            shift 2
+            ;;
+        -r|--resource-types)
+            RESOURCE_TYPES="$2"
+            shift 2
+            ;;
+        -h|--help)
+            show_usage
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            show_usage
+            exit 1
+            ;;
+    esac
+done
+
+# Initialize variables
+readonly TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+readonly CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
+readonly OUTPUT_DIR="snapshot_api_objects_${CLUSTERNAME}_${TIMESTAMP}"
+readonly LOG_FILE="${OUTPUT_DIR}/export.log"
+
+# Create output directory
+mkdir -p "${OUTPUT_DIR}"
+
+# Function to log messages
+log() {
+    local message="$1"
+    echo "[$(date +%Y-%m-%d\ %H:%M:%S)] ${message}" | tee -a "${LOG_FILE}"
+}
+
+# Function to sanitize resource names for filenames
+sanitize_filename() {
+    echo "$1" | tr -cd '[:alnum:].-_/' | tr '/' '_'
+}
+
+# Function to get namespaces to process
+get_namespaces() {
+    if [[ -n "${NAMESPACE}" ]]; then
+        # Check if specified namespace exists
+        if kubectl get namespace "${NAMESPACE}" &> /dev/null; then
+            echo "${NAMESPACE}"
+        else
+            log "ERROR: Namespace ${NAMESPACE} does not exist"
+            exit 1
+        fi
+    else
+        kubectl get ns -o jsonpath='{.items[*].metadata.name}' | tr ' ' '\n'
+    fi
+}
+
+# Function to validate resource types
+validate_resource_types() {
+    local resource_type="$1"
+    # if ! kubectl api-resources --verbs=list --namespaced -o name | grep -q "^${resource_type}$"; then
+    #     log "ERROR: Invalid resource type: ${resource_type}"
+    #     return 1
+    # fi
+    return 0
+}
+
+# Function to get resource types to process
+get_resource_types() {
+    # echo "----${RESOURCE_TYPES}----"
+    if [[ -n "${RESOURCE_TYPES}" ]]; then
+        # Convert comma-separated string to array and validate each resource type
+        local failed=0
+        echo "${RESOURCE_TYPES}" | tr ',' '\n' | while read -r resource_type; do
+            # echo "----${resource_type}2222222----"
+            if validate_resource_types "${resource_type}"; then
+                echo "${resource_type}"
+            else
+                failed=1
+            fi
+        done
+        if [[ ${failed} -eq 1 ]]; then
+            log "ERROR: One or more invalid resource types specified"
+            exit 1
+        fi
+    else
+        kubectl api-resources --verbs=list --namespaced -o name
+    fi
+}
+
+# Function to export a specific resource
+export_resource() {
+    local resource_type="$1"
+    local namespace="$2"
+
+    local output_file="${OUTPUT_DIR}/${namespace}/${resource_type}.yaml"
+    mkdir -p "${OUTPUT_DIR}/${namespace}/"
+    log "Exporting: '${resource_type}' from namespace: '${namespace}'"
+    kubectl get "${resource_type}" -n "${namespace}" -o yaml > "${output_file}" 2>> "${LOG_FILE}" | kubectl neat --output yaml - || {
+        log "WARNING: Failed to export ${resource_type} from namespace ${namespace}"
+        return 1
+    }
+}
+
+# Main execution
+log "Starting Kubernetes resource export"
+log "Output directory: ${OUTPUT_DIR}"
+if [[ -n "${NAMESPACE}" ]]; then
+    log "Exporting resources from namespace: ${NAMESPACE}"
+else
+    log "Exporting resources from all namespaces"
+fi
+if [[ -n "${RESOURCE_TYPES}" ]]; then
+    log "Exporting resource types: ${RESOURCE_TYPES}"
+else
+    log "Exporting all resource types"
+fi
+
+
+check_command() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+if kubectl neat --help >/dev/null 2>&1; then
+    log "Dependency 'kubectl neat' plugin is installed."
+else
+    echo "Dependency 'kubectl neat' pluging is NOT installed. Aborting..."
+    exit 1
+fi
+
+# Check for yq
+if check_command yq; then
+    log "Dependecy 'yq' is installed."
+else
+    echo "Dependecy 'yq' is NOT installed. Aborting..."
+    exit 1
+fi
+
+# Loop through each resource type
+# get_resource_types | while read -r resource_type; do
+#     echo "$resource_type"
+# done
+    # Get specified or all namespaces
+
+get_namespaces | while read -r namespace; do
+    log "Processing namespace: ${namespace}"
+
+        get_resource_types | while read -r resource_type; do
+
+        # Check if resources exist in this namespace
+        # kubectl get "${resource_type}" -n "${namespace}" -o name
+        if resources=$(kubectl get "${resource_type}" -n "${namespace}" -o name 2>> "${LOG_FILE}"); then
+            if [[ -n "${resources}" ]]; then
+                export_resource "${resource_type}" "${namespace}"
+            else
+                log "No '${resource_type}' resources found in namespace: '${namespace}'"
+            fi
+        else
+            log "WARNING: Unable to list '${resource_type}' in namespace: '${namespace}'"
+        fi
+    done
+done
+
+log "Export completed"
+echo "Resources have been exported to ${OUTPUT_DIR}"
+tar -czf "${OUTPUT_DIR}.tar.gz" "${OUTPUT_DIR}/"
+echo "Resources have been exported to $( basename "${OUTPUT_DIR}" ).tar.gz"
+
+# rm -rf "${OUTPUT_DIR}"  # spooky?
