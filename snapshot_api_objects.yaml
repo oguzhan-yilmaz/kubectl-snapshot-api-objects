@@ -5,7 +5,7 @@ metadata:
   name: snapshot_api_objects
 spec:
   # 'version' is a valid semantic version string (see semver.org). Note the prefix 'v' is required.
-  version: "v0.0.1"
+  version: "v0.0.4"
   # 'homepage' usually links to the GitHub repository of the plugin
   homepage: https://github.com/oguzhan-yilmaz/kubectl-snapshot-api-objects
   # 'shortDescription' explains what the plugin does in only a few words
@@ -28,12 +28,12 @@ spec:
         - darwin
         - linux
     # 'uri' specifies .zip or .tar.gz archive URL of a plugin
-    uri: "https://github.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/archive/v0.0.2.tar.gz"  # https://github.com/achanda/kubectl-restart/archive/v0.0.3.zip
+    uri: "https://github.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/archive/v0.0.4.tar.gz"  # https://github.com/achanda/kubectl-restart/archive/v0.0.3.zip
     # # 'sha256' is the sha256sum of the url (archive file) above
-    sha256: 4927497497319011aa1f1ab02d10fe03ceeec44565299b3b4e6777d39c7d2c9d
+    sha256: d3f122c36c5f3094de49539d21ff98e691c14d86ab6cc59d7b8feca195d337dd
     # # 'files' lists which files should be extracted out from downloaded archive
     files:
-    - from: "kubectl-snapshot-api-objects-*/snapshot-api-objects"
+    - from: "kubectl-snapshot-api-objects-*/snapshot_api_objects"
       to: "."
     - from: "kubectl-snapshot-api-objects-*/LICENSE"
       to: "."
