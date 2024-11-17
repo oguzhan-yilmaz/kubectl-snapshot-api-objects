@@ -2,19 +2,48 @@
 
 This plugin loops through namespaces, Kubernetes API Object types and gets the `-o yaml` output for all of them, pipes it to `kubectl neat` and create a snapshot of the currently installed K8s API objects to filesystem.
 
-
 ## Dependencies
 
 - [yq](https://github.com/mikefarah/yq)
 - ['kubectl neat' plugin](https://github.com/itaysk/kubectl-neat)
 
-## Usage
+## Installation
 
 ```bash
 kubectl krew install snapshot_api_objects
 ```
 
 ## Usage
+
+**Snapshot all API Object types from all Namespaces**
+
+```bash
+kubectl snapshot_api_objects
+```
+
+**Snapshot selected Namespaces**
+
+```bash
+kubectl snapshot_api_objects -n default,kube-system
+```
+
+**Snapshot selected Resource Types**
+
+```bash
+kubectl snapshot_api_objects -r pods,configmaps,deployments
+
+```
+
+**Snapshot selected Resource Types and Namespaces**
+
+```bash
+kubectl snapshot_api_objects \
+    -r pods,configmaps,deployments \
+    -n default,kube-system
+
+```
+
+**`kubectl snapshot_api_objects --help`**
 
 ```bash
 Usage: kubectl snapshot_api_objects [OPTIONS]
