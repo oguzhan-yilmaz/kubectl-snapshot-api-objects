@@ -3,7 +3,7 @@
 This plugin loops through namespaces, Kubernetes API Object types and gets the `-o yaml` output for all of them, pipes it to `kubectl neat` and create a snapshot of the currently installed K8s API objects to filesystem.
 
 
-## Requirements
+## Dependencies
 
 - [yq](https://github.com/mikefarah/yq)
 - ['kubectl neat' plugin](https://github.com/itaysk/kubectl-neat)
