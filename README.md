@@ -5,7 +5,11 @@ This plugin loops through namespaces, Kubernetes API Object types and gets the `
 ## Dependencies
 
 <!-- - [yq](https://github.com/mikefarah/yq) -->
+
 - ['kubectl neat' plugin](https://github.com/itaysk/kubectl-neat)
+  ```bash
+  kubectl krew install neat
+  ```
 
 ## Installation
 
