@@ -14,7 +14,7 @@ This plugin loops through namespaces, Kubernetes API Object types and gets the `
 ## Installation
 
 ```bash
-kubectl krew install snapshot_api_objects
+kubectl krew install snapshot-api-objects
 ```
 
 ## Usage
@@ -22,35 +22,35 @@ kubectl krew install snapshot_api_objects
 **Snapshot all API Object types from all Namespaces**
 
 ```bash
-kubectl snapshot_api_objects
+kubectl snapshot-api-objects
 ```
 
 **Snapshot selected Namespaces**
 
 ```bash
-kubectl snapshot_api_objects -n default,kube-system
+kubectl snapshot-api-objects -n default,kube-system
 ```
 
 **Snapshot selected Resource Types**
 
 ```bash
-kubectl snapshot_api_objects -r pods,configmaps,deployments
+kubectl snapshot-api-objects -r pods,configmaps,deployments
 
 ```
 
 **Snapshot selected Resource Types and Namespaces**
 
 ```bash
-kubectl snapshot_api_objects \
+kubectl snapshot-api-objects \
     -r pods,configmaps,deployments \
     -n default,kube-system
 
 ```
 
-**`kubectl snapshot_api_objects --help`**
+**`kubectl snapshot-api-objects --help`**
 
 ```bash
-Usage: kubectl snapshot_api_objects [OPTIONS]
+Usage: kubectl snapshot-api-objects [OPTIONS]
 
 Options:
     -n, --namespace      Optional: Specific namespace to export. Defaults to all namespaces
@@ -60,36 +60,36 @@ Options:
 
 Examples:
     # Export all resources from all namespaces
-    kubectl snapshot_api_objects                                                
+    kubectl snapshot-api-objects                                                
 
     # Export all resources from default and kube-system namespaces
-    kubectl snapshot_api_objects -n default,kube-system                         
+    kubectl snapshot-api-objects -n default,kube-system                         
 
     # Export only pods and deployments from all namespaces
-    kubectl snapshot_api_objects -r pods,deployments                            
+    kubectl snapshot-api-objects -r pods,deployments                            
 
     # Export pods and deployments from default and kube-system namespaces
-    kubectl snapshot_api_objects -n default,kube-system -r pods,deployments     
+    kubectl snapshot-api-objects -n default,kube-system -r pods,deployments     
 EOF
 ```
 
 <!--
 git update-index --chmod=+x snapshot-api-objects
 
-chmod +x ~/.krew/store/snapshot_api_objects/v0.0.1/source/snapshot-api-objects-script.sh
+chmod +x ~/.krew/store/snapshot-api-objects/v0.0.1/source/snapshot-api-objects-script.sh
  -->
 
 ## Local Installation
 
 ```bash
-curl -sL https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml -o snapshot_api_objects.krew.yaml
+curl -sL https://raw.githubusercontent.com/oguzhan-yilmaz/kubectl-snapshot-api-objects/refs/heads/main/.krew.yaml -o snapshot-api-objects.krew.yaml
 
-kubectl krew uninstall snapshot_api_objects || true
+kubectl krew uninstall snapshot-api-objects || true
 
-kubectl krew install --manifest=snapshot_api_objects.krew.yaml
+kubectl krew install --manifest=snapshot-api-objects.krew.yaml
 
 # make kubectl krew plugin executable upon local installation
-chmod +x ~/.krew/store/snapshot_api_objects/v*/snapshot_api_objects
+chmod +x ~/.krew/store/snapshot-api-objects/v*/snapshot-api-objects
 
-kubectl snapshot_api_objects -n default
+kubectl snapshot-api-objects -n default
 ```

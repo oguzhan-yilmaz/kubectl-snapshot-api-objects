@@ -7,7 +7,7 @@ IFS=$'\n\t'
 # Function to show usage
 show_usage() {
     cat << EOF
-Usage: kubectl snapshot_api_objects [OPTIONS]
+Usage: kubectl snapshot-api-objects [OPTIONS]
 
 Options:
     -n, --namespace      Optional: Specific namespace to export. Defaults to all namespaces
@@ -17,16 +17,16 @@ Options:
 
 Examples:
     # Export all resources from all namespaces
-    kubectl snapshot_api_objects                                                
+    kubectl snapshot-api-objects                                                
 
     # Export all resources from default and kube-system namespaces
-    kubectl snapshot_api_objects -n default,kube-system                         
+    kubectl snapshot-api-objects -n default,kube-system                         
 
     # Export only pods and deployments from all namespaces
-    kubectl snapshot_api_objects -r pods,deployments                            
+    kubectl snapshot-api-objects -r pods,deployments                            
 
     # Export pods and deployments from default and kube-system namespaces
-    kubectl snapshot_api_objects -n default,kube-system -r pods,deployments  
+    kubectl snapshot-api-objects -n default,kube-system -r pods,deployments  
 EOF
 }
 
@@ -58,7 +58,7 @@ done
 # Initialize variables
 readonly TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 readonly CLUSTERNAME=$(kubectl config view --minify -o jsonpath='{.clusters[0].name}')
-readonly OUTPUT_DIR="snapshot_api_objects_${CLUSTERNAME}_${TIMESTAMP}"
+readonly OUTPUT_DIR="snapshot-api-objects_${CLUSTERNAME}_${TIMESTAMP}"
 readonly LOG_FILE="${OUTPUT_DIR}/export.log"
 
 # Create output directory
